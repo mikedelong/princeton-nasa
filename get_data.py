@@ -1,5 +1,5 @@
 """
-Load and parse Excel data
+Download NASA data from the Princeton site
 """
 
 from logging import INFO
@@ -11,7 +11,6 @@ from arrow import now
 from pandas import read_csv
 
 
-DATA_FOLDER = './data/'
 OUTPUT_FOLDER = './data/'
 URL_ROOT = 'https://dataspace.princeton.edu/bitstream/88435/dsp019593tz25c/'
 URLS = {
@@ -27,7 +26,7 @@ if __name__ == '__main__':
     basicConfig(format='%(asctime)s : %(name)s : %(levelname)s : %(message)s', level=INFO, )
     LOGGER.info('started')
 
-    for folder in [DATA_FOLDER, OUTPUT_FOLDER]:
+    for folder in [OUTPUT_FOLDER]:
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
