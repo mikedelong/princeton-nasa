@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     for short_name, url in URLS.items():
         filepath_or_buffer = URL_ROOT + url
-        df = read_csv(filepath_or_buffer=filepath_or_buffer)
+        df = read_csv(filepath_or_buffer=filepath_or_buffer, thousands=',')
         df.to_csv(OUTPUT_FOLDER + short_name + '.csv')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
