@@ -11,6 +11,15 @@ from arrow import now
 from pandas import read_csv
 
 
+def fix_currency_column(arg):
+    if isinstance(arg, float):
+        return arg
+    elif arg.startswith('$'):
+        return float(arg.replace('$', '').replace(',', ''))
+    else:
+        return arg
+
+
 OUTPUT_FOLDER = './data/'
 URL_ROOT = 'https://dataspace.princeton.edu/bitstream/88435/dsp019593tz25c/'
 URLS = {
@@ -32,7 +41,14 @@ if __name__ == '__main__':
 
     for short_name, url in URLS.items():
         filepath_or_buffer = URL_ROOT + url
+        LOGGER.info('loading: %s', short_name)
         df = read_csv(filepath_or_buffer=filepath_or_buffer, thousands=',')
+        if short_name == 'space_science':
+            columns = df.columns.tolist()
+            columns[0] = 'Year'
+            df.columns = columns
+            for column in columns[1:]:
+                df[column] = df[column].apply(func=fix_currency_column)
         df.to_csv(OUTPUT_FOLDER + short_name + '.csv')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
