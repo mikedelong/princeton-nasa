@@ -42,8 +42,8 @@ if __name__ == '__main__':
     for short_name, url in URLS.items():
         filepath_or_buffer = URL_ROOT + url
         LOGGER.info('loading: %s', short_name)
-        df = read_csv(filepath_or_buffer=filepath_or_buffer, thousands=',')
-        if short_name == 'space_science':
+        df = read_csv(filepath_or_buffer=filepath_or_buffer, )
+        if short_name in {'space_science', 'lunar_and_planetary'}:
             columns = df.columns.tolist()
             columns[0] = 'Year'
             df.columns = columns
