@@ -35,6 +35,19 @@ def label_point(x: Series, y: Series, val: Series, ax: Axes):
     return
 
 
+def parse_age_group(arg) -> str:
+    if isinstance(arg, float):
+        return 'Unknown'
+    pieces = arg.split()
+    key = pieces[0].split(':')[1]
+    if key == 'M':
+        return 'Male'
+    elif key == 'F':
+        return 'Female'
+    else:
+        return 'Unknown'
+
+
 INPUT_FILE = '2022 Terrapin 50K_.csv'
 INPUT_FOLDER = './data/'
 OUTPUT_FOLDER = './plot/'
@@ -55,13 +68,12 @@ if __name__ == '__main__':
     LOGGER.info(df.shape)
     LOGGER.info(df.columns.tolist())
     df['Hours'] = df['Chip Time'].apply(get_hours)
+    df['Sex'] = df['Age Group Place'].apply(parse_age_group)
 
     set_style(style=SEABORN_STYLE)
 
     figure_scatterplot, axes_scatterplot = subplots()
-    result_scatterplot = lmplot(data=df, x='Age', y='Hours',
-                                # hue='hue',
-                                legend=False, aspect=2, )
+    result_scatterplot = lmplot(aspect=2, data=df, fit_reg=False, hue='Sex', legend=True, x='Age', y='Hours', )
     label_point(x=df['Age'], y=df['Hours'], val=df['Name'], ax=gca())
     tight_layout()
 
