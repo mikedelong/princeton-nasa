@@ -76,6 +76,7 @@ if __name__ == '__main__':
     fixes_file = INPUT_FOLDER + FIXES_FILE
     with open(file=fixes_file, mode='r') as input_fp:
         fixes = load(fp=input_fp)
+    LOGGER.info('loaded name/sex fixes from %s', fixes_file)
     df['Hours'] = df['Chip Time'].apply(get_hours)
     df['Sex'] = df['Age Group Place'].apply(parse_age_group)
     df['Sex'] = df.apply(axis=1, func=lambda x: map_changes(x['Name'], x['Sex'], fixes))
@@ -85,8 +86,9 @@ if __name__ == '__main__':
     result_scatterplot = lmplot(aspect=2, data=df, fit_reg=True, hue='Sex', legend=True, x='Age', y='Hours', )
     label_point(x=df['Age'], y=df['Hours'], val=df['Name'], ax=gca())
     tight_layout()
-
-    savefig(fname=OUTPUT_FOLDER + '{}_scatterplot.png'.format('terrapin_mountain_2022'), format='png')
+    file_scatterplot = OUTPUT_FOLDER + '{}_scatterplot.png'.format('terrapin_mountain_2022')
+    savefig(fname=file_scatterplot, format='png')
+    LOGGER.info('wrote to %s', file_scatterplot)
     close(fig=figure_scatterplot)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
