@@ -20,6 +20,7 @@ from pandas import read_csv
 from seaborn import lmplot
 from seaborn import set_style
 
+from json import load
 
 def get_hours(arg: str) -> float:
     pieces = arg.split(':')
@@ -35,6 +36,9 @@ def label_point(x: Series, y: Series, val: Series, ax: Axes):
     return
 
 
+def map_changes(name: str, sex: str, changes: dict) -> str:
+    return sex if name not in changes.keys() else changes[name]
+
 def parse_age_group(arg) -> str:
     if isinstance(arg, float):
         return 'Unknown'
@@ -48,6 +52,7 @@ def parse_age_group(arg) -> str:
         return 'Unknown'
 
 
+FIXES_FILE = 'terrapin_mountain_fixes.json'
 INPUT_FILE = '2022 Terrapin 50K_.csv'
 INPUT_FOLDER = './data/'
 OUTPUT_FOLDER = './plot/'
@@ -67,13 +72,17 @@ if __name__ == '__main__':
     df = read_csv(filepath_or_buffer=input_file)
     LOGGER.info(df.shape)
     LOGGER.info(df.columns.tolist())
+
+    fixes_file = INPUT_FOLDER + FIXES_FILE
+    with open(file=fixes_file, mode='r') as input_fp:
+        fixes = load(fp=input_fp)
     df['Hours'] = df['Chip Time'].apply(get_hours)
     df['Sex'] = df['Age Group Place'].apply(parse_age_group)
+    df['Sex'] = df.apply(axis=1, func=lambda x: map_changes(x['Name'], x['Sex'], fixes))
 
     set_style(style=SEABORN_STYLE)
-
     figure_scatterplot, axes_scatterplot = subplots()
-    result_scatterplot = lmplot(aspect=2, data=df, fit_reg=False, hue='Sex', legend=True, x='Age', y='Hours', )
+    result_scatterplot = lmplot(aspect=2, data=df, fit_reg=True, hue='Sex', legend=True, x='Age', y='Hours', )
     label_point(x=df['Age'], y=df['Hours'], val=df['Name'], ax=gca())
     tight_layout()
 
