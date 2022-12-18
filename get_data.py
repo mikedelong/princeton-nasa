@@ -49,6 +49,6 @@ if __name__ == '__main__':
             df.columns = columns
             for column in columns[1:]:
                 df[column] = df[column].apply(func=fix_currency_column)
-        df.to_csv(OUTPUT_FOLDER + short_name + '.csv')
+        df.to_csv(OUTPUT_FOLDER + short_name + '.csv', index=False)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
