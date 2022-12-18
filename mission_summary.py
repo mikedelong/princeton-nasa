@@ -10,9 +10,9 @@ from pathlib import Path
 from arrow import now
 from matplotlib.pyplot import savefig
 from matplotlib.pyplot import subplots
+from matplotlib.pyplot import tight_layout
 from pandas import DataFrame
 from pandas import read_csv
-from seaborn import set_theme
 
 
 def read_csv_dataframe(fname: str) -> DataFrame:
@@ -38,7 +38,6 @@ if __name__ == '__main__':
     LOGGER.info('reading %s', input_file)
     df = read_csv_dataframe(fname=input_file)
 
-    set_theme(style='whitegrid')
     f, ax = subplots(figsize=(6, 15))
     y_coordinate = 10
     y_ticks = list()
@@ -48,6 +47,7 @@ if __name__ == '__main__':
         y_coordinate += 10
     ax.set_yticks(y_ticks, labels=df['Name'].values.tolist())
 
+    tight_layout()
     savefig(format='png', fname=OUTPUT_FOLDER + 'mission_summary.png')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
