@@ -40,12 +40,13 @@ if __name__ == '__main__':
     LOGGER.info('reading %s', input_file)
     df = read_csv_dataframe(fname=input_file)
 
-    f, ax = subplots(figsize=(6, 15))
+    f, ax = subplots(figsize=(6, 15), )
     use(style=STYLE)
     y_coordinate = 10
     y_ticks = list()
     for index, row in df.iterrows():
-        ax.broken_barh([(row['Launch'], row['End'] - row['Launch'])], (y_coordinate, 9))
+        facecolor = 'C0' if row['End'] != 2019 else 'C2'
+        ax.broken_barh([(row['Launch'], row['End'] - row['Launch'])], (y_coordinate, 9), facecolor=facecolor)
         y_ticks.append(y_coordinate + 5)
         y_coordinate += 10
     ax.set_yticks(y_ticks, labels=df['Name'].values.tolist())
