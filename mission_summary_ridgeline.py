@@ -12,6 +12,7 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.pyplot import figure
 from matplotlib.pyplot import savefig
 from matplotlib.pyplot import tight_layout
+from matplotlib.style import use
 from numpy import array
 from numpy import exp
 from numpy import linspace
@@ -43,33 +44,31 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-
     # https://matplotlib.org/matplotblog/posts/create-ridgeplots-in-matplotlib/
     df = read_csv(filepath_or_buffer=URL)
     countries = [x for x in unique(df['country'])]
     colors = ['#0000ff', '#3300cc', '#660099', '#990066', '#cc0033', '#ff0000']
 
+    use(style=STYLE)
     gs = GridSpec(len(countries), 1)
     fig = figure(figsize=(16, 9))
 
-    i = 0
-
     ax_objs = []
-    for country in countries:
+    kernel = ['cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat', ][5]
+    for index, country in enumerate(countries):
         x = array(df[df['country'] == country].score)
         x_d = linspace(0, 1, 1000)
-
-        kde = KernelDensity(bandwidth=0.03, kernel='gaussian')
+        kde = KernelDensity(bandwidth=0.03, kernel=kernel)
         kde.fit(x[:, None])
 
         logprob = kde.score_samples(x_d[:, None])
 
         # creating new axes object
-        ax_objs.append(fig.add_subplot(gs[i:i + 1, 0:]))
+        ax_objs.append(fig.add_subplot(gs[index:index + 1, 0:]))
 
         # plotting the distribution
         ax_objs[-1].plot(x_d, exp(logprob), color='#f0f0f0', lw=1)
-        ax_objs[-1].fill_between(x_d, exp(logprob), alpha=1, color=colors[i])
+        ax_objs[-1].fill_between(x_d, exp(logprob), alpha=1, color=colors[index])
 
         # setting uniform x and y lims
         ax_objs[-1].set_xlim(0, 1)
@@ -82,18 +81,15 @@ if __name__ == '__main__':
         # remove borders, axis ticks, and labels
         ax_objs[-1].set_yticklabels([])
 
-        if i == len(countries) - 1:
-            ax_objs[-1].set_xlabel('Test Score', fontsize=16, fontweight='bold')
-        else:
+        if country != countries[-1]:
             ax_objs[-1].set_xticklabels([])
+        else:
+            ax_objs[-1].set_xlabel('Test Score', fontsize=16, fontweight='bold')
 
         for spline in ['top', 'right', 'left', 'bottom']:
             ax_objs[-1].spines[spline].set_visible(False)
-
         adj_country = country.replace(' ', '\n')
         ax_objs[-1].text(-0.02, 0, adj_country, fontweight='bold', fontsize=14, ha='right')
-
-        i += 1
 
     gs.update(hspace=-0.7)
     fig.text(0.07, 0.85, 'Distribution of Aptitude Test Results from 18 – 24 year-olds', fontsize=20)
