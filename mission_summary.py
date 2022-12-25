@@ -44,14 +44,16 @@ if __name__ == '__main__':
     use(style=STYLE)
     y_ticks = list()
     df['$/Year'] = df.apply(axis=1, func=lambda x: 0 if x['End'] == x['Launch'] else x['2019 M Total'] / (
-                x['End'] - x['Launch']))
-    choice = 0
-    df['box_height'] = [10,  df['$/Year'].astype(int)][choice]
+            x['End'] - x['Launch']))
+    choice = 1
+    df['box_height'] = [10, df['$/Year'].astype(int)][choice]
     df['y_coordinate'] = df['box_height'].cumsum()
     for index, row in df.iterrows():
         facecolor = 'C0' if row['End'] != 2019 else 'C2'
-        ax.broken_barh([(row['Launch'], row['End'] - row['Launch'])], (row['y_coordinate'], 9), facecolor=facecolor)
-        y_ticks.append(row['y_coordinate'] + 0.5 * row['box_height'])
+        height = (row['y_coordinate'], row['box_height'],)
+        ax.broken_barh([(row['Launch'], row['End'] - row['Launch'])], height, facecolor=facecolor)
+        y_tick = row['y_coordinate'] + 0.5 * row['box_height']
+        y_ticks.append(y_tick)
     ax.set_yticks(y_ticks, labels=df['Name'].values.tolist())
     tight_layout()
     savefig(format='png', fname=OUTPUT_FOLDER + 'mission_summary.png')
