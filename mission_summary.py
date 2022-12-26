@@ -45,7 +45,7 @@ if __name__ == '__main__':
     y_ticks = list()
     df['$/Year'] = df.apply(axis=1, func=lambda x: 0 if x['End'] == x['Launch'] else x['2019 M Total'] / (
             x['End'] - x['Launch']))
-    choice = 1
+    choice = 0
     df['box_height'] = [10, df['$/Year'].astype(int)][choice]
     df['y_coordinate'] = df['box_height'].cumsum()
     for index, row in df.iterrows():
