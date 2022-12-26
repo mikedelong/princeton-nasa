@@ -43,7 +43,7 @@ if __name__ == '__main__':
     use(style=STYLE)
     figsizes = {
         'broken_barh': (6, 15),
-        'pie': (12,12),
+        'pie': (12, 12),
     }
     for chart_type in figsizes.keys():
         f, ax = subplots(figsize=figsizes[chart_type], )
@@ -63,7 +63,7 @@ if __name__ == '__main__':
             fname = OUTPUT_FOLDER + 'mission_summary.png'
         elif chart_type == 'pie':
             pie_df = df[['Name', '2019 M Total']].set_index('Name')
-            result = pie_df.plot(kind='pie',  y='2019 M Total',)
+            result = pie_df.plot(kind='pie', y='2019 M Total', )
             fname = OUTPUT_FOLDER + 'mission_summary_pie.png'
         else:
             fname = None
@@ -71,8 +71,5 @@ if __name__ == '__main__':
         tight_layout()
         LOGGER.info('saving %s', fname)
         savefig(format='png', fname=fname)
-
-
-
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
