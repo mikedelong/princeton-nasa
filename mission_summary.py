@@ -63,7 +63,7 @@ if __name__ == '__main__':
             fname = OUTPUT_FOLDER + 'mission_summary.png'
         elif chart_type == 'pie':
             pie_df = df[['Name', '2019 M Total']].set_index('Name')
-            result = pie_df.plot(kind='pie', y='2019 M Total', )
+            result = pie_df.plot(kind='pie', legend=False, y='2019 M Total', )
             fname = OUTPUT_FOLDER + 'mission_summary_pie.png'
         else:
             fname = None
