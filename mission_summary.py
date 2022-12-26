@@ -41,8 +41,12 @@ if __name__ == '__main__':
     df = read_csv_dataframe(fname=input_file)
 
     use(style=STYLE)
-    for chart_type in ['broken_barh']:
-        f, ax = subplots(figsize=(6, 15), )
+    figsizes = {
+        'broken_barh': (6, 15),
+        'pie': (12,12),
+    }
+    for chart_type in figsizes.keys():
+        f, ax = subplots(figsize=figsizes[chart_type], )
         if chart_type == 'broken_barh':
             y_ticks = list()
             df['$/Year'] = df.apply(axis=1, func=lambda x: 0 if x['End'] == x['Launch'] else x['2019 M Total'] / (
@@ -56,8 +60,18 @@ if __name__ == '__main__':
                 y_tick = row['y_coordinate'] + 0.5 * row['box_height']
                 y_ticks.append(y_tick)
             ax.set_yticks(y_ticks, labels=df['Name'].values.tolist())
-            tight_layout()
-            savefig(format='png', fname=OUTPUT_FOLDER + 'mission_summary.png')
+            fname = OUTPUT_FOLDER + 'mission_summary.png'
+        elif chart_type == 'pie':
+            pie_df = df[['Name', '2019 M Total']].set_index('Name')
+            result = pie_df.plot(kind='pie',  y='2019 M Total',)
+            fname = OUTPUT_FOLDER + 'mission_summary_pie.png'
+        else:
+            fname = None
+            raise NotImplementedError(chart_type)
+        tight_layout()
+        LOGGER.info('saving %s', fname)
+        savefig(format='png', fname=fname)
+
 
 
 
