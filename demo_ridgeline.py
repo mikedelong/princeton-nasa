@@ -27,11 +27,10 @@ def read_csv_dataframe(fname: str) -> DataFrame:
     return result_df
 
 
-INPUT_FILE = 'mission_summary.csv'
 URL = 'https://raw.githubusercontent.com/petermckeever/mock-data/master/datasets/mock-european-test-results.csv'
 INPUT_FOLDER = './data/'
 OUTPUT_FOLDER = './plot/'
-OUTPUT_FILE = 'mission_summary_ridgeline.png'
+OUTPUT_FILE = 'demo_ridgeline.png'
 STYLE = 'fivethirtyeight'
 
 if __name__ == '__main__':
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     ax_objs = []
     kernel = ['cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat', ][5]
     for index, country in enumerate(countries):
-        x = array(df[df['country'] == country].score)
+        x = array(df[df['country'] == country]['score'])
         x_d = linspace(0, 1, 1000)
         kde = KernelDensity(bandwidth=0.03, kernel=kernel)
         kde.fit(x[:, None])
