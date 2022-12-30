@@ -36,7 +36,6 @@ def label(x, color, label):
 INPUT_FOLDER = './data/'
 OUTPUT_FOLDER = './plot/'
 OUTPUT_FILE = 'demo_seaborn_ridgeplot.png'
-STYLE = 'fivethirtyeight'
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -51,7 +50,7 @@ if __name__ == '__main__':
     set_theme(style='white', rc={'axes.facecolor': (0, 0, 0, 0)})
 
     # Create the data
-    rs = RandomState(1979)
+    rs = RandomState(1)
     x = rs.randn(500)
     g = tile(list('ABCDEFGHIJ'), 50)
     df = DataFrame(dict(x=x, g=g))
@@ -63,7 +62,7 @@ if __name__ == '__main__':
     g = FacetGrid(df, row='g', hue='g', aspect=15, height=.5, palette=pal)
 
     # Draw the densities in a few steps
-    g.map(kdeplot, 'x',          bw_adjust=.5, clip_on=False, fill=True, alpha=1, linewidth=1.5)
+    g.map(kdeplot, 'x', bw_adjust=.5, clip_on=False, fill=True, alpha=1, linewidth=1.5)
     g.map(kdeplot, 'x', clip_on=False, color='w', lw=2, bw_adjust=.5)
 
     # passing color=None to refline() uses the hue mapping
@@ -78,8 +77,6 @@ if __name__ == '__main__':
     g.set(yticks=[], ylabel='')
     g.despine(bottom=True, left=True)
 
-    use(style=STYLE)
-    # tight_layout()
     savefig(format='png', fname=OUTPUT_FOLDER + OUTPUT_FILE)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
