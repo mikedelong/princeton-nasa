@@ -59,6 +59,7 @@ if __name__ == '__main__':
             max_year = df['End'].max()
             df['$/Year'] = df.apply(axis=1, func=lambda x: 0 if x['End'] == x['Launch'] else x['2019 M Total'] / (
                     x['End'] - x['Launch']))
+            # https://github.com/holtzy/The-Python-Graph-Gallery/blob/master/src/notebooks/251-stacked-area-chart-with-seaborn-style.ipynb
             x = list(range(min_year, max_year))
             y = [[row['$/Year'] if row['Launch'] <= year <= row['End'] else 0
                 for year in range(min_year, max_year)]
