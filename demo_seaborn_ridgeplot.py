@@ -10,17 +10,15 @@ from pathlib import Path
 from arrow import now
 from matplotlib.pyplot import gca
 from matplotlib.pyplot import savefig
-from matplotlib.pyplot import tight_layout
-from matplotlib.style import use
 from numpy import tile
 from numpy.random import RandomState
 from pandas import DataFrame
 from pandas import read_csv
 from seaborn import FacetGrid
 from seaborn import cubehelix_palette
+from seaborn import histplot
 from seaborn import kdeplot
 from seaborn import set_theme
-from seaborn import histplot
 
 
 def read_csv_dataframe(fname: str) -> DataFrame:
