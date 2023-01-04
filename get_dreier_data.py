@@ -12,7 +12,8 @@ from arrow import now
 
 OUTPUT_FILE = 'Planetary Exploration Budget Dataset - The Planetary Society.xlsx'
 OUTPUT_FOLDER = './data/'
-URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSngWs2AJa9KoPByrpX-XUgqD6UcMdjl3IW1xAW-m3yCvjreNM6d9KFWkshhxE_sPW9JmgmsaV0NwbG/pub?output=xlsx'
+URL = 'https://docs.google.com/spreadsheets/d/e/' \
+      '2PACX-1vSngWs2AJa9KoPByrpX-XUgqD6UcMdjl3IW1xAW-m3yCvjreNM6d9KFWkshhxE_sPW9JmgmsaV0NwbG/pub?output=xlsx'
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -24,6 +25,7 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
+    # https://stackoverflow.com/a/56129059
     output_file = OUTPUT_FOLDER + OUTPUT_FILE
     LOGGER.info('downloading file to %s', output_file)
     urlretrieve(url=URL, filename=output_file)
