@@ -27,5 +27,7 @@ if __name__ == '__main__':
     input_file = INPUT_FOLDER + INPUT_FILE
     engine = 'openpyxl'
     xl = ExcelFile(path_or_buffer=input_file, engine=engine)
+    sheet_names = xl.sheet_names
+    LOGGER.info(sheet_names)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
