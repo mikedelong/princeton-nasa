@@ -13,13 +13,31 @@ from pandas import ExcelFile
 from pandas import read_excel
 
 
-def read_dataframe_excel(arg: str, sheet_name: str) -> DataFrame:
-    result_df = read_excel(io=arg, sheet_name=sheet_name, engine='openpyxl')
+def read_dataframe_excel(arg_io: str, arg_sheet_name: str) -> DataFrame:
+    result_df = read_excel(io=arg_io, sheet_name=arg_sheet_name, engine='openpyxl')
     return result_df
 
 
 INPUT_FILE = 'Planetary Exploration Budget Dataset - The Planetary Society.xlsx'
 INPUT_FOLDER = './data/'
+SHEET_NAMES = ['Introduction', 'Mission Costs', 'Timeline', 'Planetary Science Budget Histor',
+               'Budget History (inflation adj)', 'Funding by Destination', 'Decadal Totals (inflation adj)',
+               'Major Programs, 1994 - current', 'Major Programs, 1960 - 1980', 'Cassini', 'CONTOUR', 'DART', 'DAVINCI',
+               'Dawn', 'Deep Impact', 'Deep Space 1', 'Discovery Program', 'Europa Clipper', 'Galileo', 'Genesis',
+               'GRAIL', 'InSight', 'Juno', 'LADEE', 'Lucy', 'Lunar Orbiters', 'Lunar Prospector', 'Magellan',
+               'Mariner 10', 'Mariner 8 & 9', 'Mariner Program', 'Mars Perseverance', 'Mars Global Surveyor',
+               'Mars Observer', 'Mars Odyssey', 'Mars Pathfinder', 'MAVEN', 'Mars Sample Return', 'MESSENGER', 'MER',
+               'MPLMCO', 'MRO', 'MSL Curiosity', 'NEAR', 'New Horizons', 'OSIRIS-REx', 'Phoenix', 'Pioneer 10 & 11',
+               'Pioneer Venus', 'Pioneer Program', 'Planetary Defense', 'Psyche', 'Ranger', 'SIMPLEx Program',
+               'Stardust', 'Surveyor Program', 'Viking', 'VIPER', 'VERITAS', 'Voyager', 'FY 2023', 'FY 2022', 'FY 2021',
+               'FY 2020', 'FY 2019', 'FY 2018', 'FY 2017', 'FY 2016', 'FY 2015', 'FY 2014', 'FY 2013', 'FY 2012',
+               'FY 2011', 'FY 2010', 'FY 2009', 'FY 2008', 'FY 2007', 'FY 2006', 'FY 2005', 'FY 2004', 'FY 2003',
+               'FY 2002', 'FY 2001', 'FY 2000', 'FY 1999', 'FY 1998', 'FY1997', 'FY 1996', 'FY 1995', 'FY 1994',
+               'FY 1993', 'FY 1992', 'FY 1991', 'FY 1990', 'FY 1989', 'FY 1988', 'FY 1987', 'FY 1986', 'FY 1985',
+               'FY 1984', 'FY 1983', 'FY 1982', 'FY 1981', 'FY 1980', 'FY 1979', 'FY 1978', 'FY 1977', 'FY 1976',
+               'FY 1976 TQ', 'FY 1975', 'FY 1974', 'FY 1973', 'FY 1972', 'FY 1971', 'FY 1970', 'FY 1969', 'FY 1968',
+               'FY 1967', 'FY 1966', 'FY 1965', 'FY 1964', 'FY 1963', 'FY 1962', 'FY 1961', 'FY 1960', 'FY 1959',
+               'NNSI', 'NAICS', 'US Spending & Outlays']
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -32,12 +50,10 @@ if __name__ == '__main__':
         Path(folder).mkdir(parents=True, exist_ok=True)
 
     input_file = INPUT_FOLDER + INPUT_FILE
-    engine = 'openpyxl'
-    xl = ExcelFile(path_or_buffer=input_file, engine=engine)
-    sheet_names = xl.sheet_names
-    LOGGER.info(sheet_names)
-
-    df = read_dataframe_excel(arg=input_file, sheet_name='Mission Costs')
+    sheet_name = 'Mission Costs'
+    LOGGER.info('loading sheet %s from %s', sheet_name, input_file)
+    df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name)
+    df = df.drop(columns=['Unnamed: 0'])
     LOGGER.info(df.shape)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
