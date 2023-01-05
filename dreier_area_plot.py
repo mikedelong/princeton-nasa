@@ -9,7 +9,6 @@ from pathlib import Path
 
 from arrow import now
 from pandas import DataFrame
-from pandas import ExcelFile
 from pandas import read_excel
 
 
