@@ -8,6 +8,11 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from matplotlib.pyplot import legend
+from matplotlib.pyplot import savefig
+from matplotlib.pyplot import stackplot
+from matplotlib.pyplot import subplots
+from matplotlib.pyplot import tight_layout
 from pandas import DataFrame
 from pandas import read_excel
 
@@ -19,6 +24,7 @@ def read_dataframe_excel(arg_io: str, arg_sheet_name: str) -> DataFrame:
 
 INPUT_FILE = 'Planetary Exploration Budget Dataset - The Planetary Society.xlsx'
 INPUT_FOLDER = './data/'
+OUTPUT_FOLDER = './plot/'
 SHEET_NAMES = ['Introduction', 'Mission Costs', 'Timeline', 'Planetary Science Budget Histor',
                'Budget History (inflation adj)', 'Funding by Destination', 'Decadal Totals (inflation adj)',
                'Major Programs, 1994 - current', 'Major Programs, 1960 - 1980', 'Cassini', 'CONTOUR', 'DART', 'DAVINCI',
@@ -58,5 +64,17 @@ if __name__ == '__main__':
     # for the moment let's drop our problematic row
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info(df.shape)
+    f, ax = subplots(figsize=(8, 8), )
+    max_year = df['Fiscal Year'].max() + 1
+    min_year = df['Fiscal Year'].min()
+    x = list(range(min_year, max_year))
+    columns = [item for item in df.columns if item != 'Fiscal Year']
+    y = [df[column].values for column in columns]
+    stackplot(x, y, labels=columns)
+    legend(loc='upper right')
+    fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
+    tight_layout()
+    LOGGER.info('saving %s', fname)
+    savefig(format='png', fname=fname)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
