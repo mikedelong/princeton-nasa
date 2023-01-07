@@ -64,13 +64,11 @@ if __name__ == '__main__':
     # for the moment let's drop our problematic row
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info(df.shape)
-    f, ax = subplots(figsize=(8, 8), )
+    f, ax = subplots(figsize=(16, 9), )
     max_year = df['Fiscal Year'].max() + 1
     min_year = df['Fiscal Year'].min()
-    x = list(range(min_year, max_year))
     columns = [item for item in df.columns if item != 'Fiscal Year']
-    y = [df[column].values for column in columns]
-    stackplot(x, y, labels=columns)
+    stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns)
     legend(loc='upper right')
     fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
     tight_layout()
