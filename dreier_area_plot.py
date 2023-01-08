@@ -8,6 +8,8 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from matplotlib.pyplot import cm
+from matplotlib.pyplot import cycler
 from matplotlib.pyplot import legend
 from matplotlib.pyplot import savefig
 from matplotlib.pyplot import stackplot
@@ -15,6 +17,7 @@ from matplotlib.pyplot import subplots
 from matplotlib.pyplot import tight_layout
 from pandas import DataFrame
 from pandas import read_excel
+from numpy import linspace
 
 
 def read_dataframe_excel(arg_io: str, arg_sheet_name: str) -> DataFrame:
@@ -65,10 +68,16 @@ if __name__ == '__main__':
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info(df.shape)
     f, ax = subplots(figsize=(16, 9), )
+    ax.set_prop_cycle(color=cm.viridis(linspace(0, 1, len(df.columns))))
+
     max_year = df['Fiscal Year'].max() + 1
     min_year = df['Fiscal Year'].min()
     columns = [item for item in df.columns if item != 'Fiscal Year']
-    stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns)
+    stackplot(
+        list(range(min_year, max_year)),
+        [df[column].values for column in columns],
+        labels=columns,
+    )
     legend(loc='upper left', ncol=2)
     fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
     tight_layout()
