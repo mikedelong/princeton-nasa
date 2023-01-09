@@ -64,7 +64,7 @@ if __name__ == '__main__':
     df = df[~df['Fiscal Year'].isna()].fillna(0)
     # for the moment let's drop our problematic row
     df = df[df['Fiscal Year'] != '1976 TQ']
-    LOGGER.info(df.shape)
+    LOGGER.info('shape: %s', df.shape)
     f, ax = subplots(figsize=(16, 9), )
     ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
 
