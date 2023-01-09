@@ -67,7 +67,7 @@ if __name__ == '__main__':
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info(df.shape)
     f, ax = subplots(figsize=(16, 9), )
-    ax.set_prop_cycle(color=cm.hsv(linspace(0, 1, len(df.columns))))
+    ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
 
     max_year = df['Fiscal Year'].max() + 1
     min_year = df['Fiscal Year'].min()
