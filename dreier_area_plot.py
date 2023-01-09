@@ -61,8 +61,7 @@ if __name__ == '__main__':
     LOGGER.info('loading sheet %s from %s', sheet_name, input_file)
     df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name)
     df = df.drop(columns=['Unnamed: 0'])
-    df = df[~df['Fiscal Year'].isna()]
-    df = df.fillna(0)
+    df = df[~df['Fiscal Year'].isna()].fillna(0)
     # for the moment let's drop our problematic row
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info(df.shape)
