@@ -74,9 +74,8 @@ if __name__ == '__main__':
     columns = [item for item in df.columns if item != 'Fiscal Year']
     first = [(column, get_mission_year(df, column)) for column in columns]
     first = sorted(first, key=lambda x: x[1], )
-    columns = ['Fiscal Year'] + [item[0] for item in first]
-    df = df[columns]
-    columns = columns[1:]
+    df = df[['Fiscal Year'] + [item[0] for item in first]]
+    columns = [item[0] for item in first]
     f, ax = subplots(figsize=(16, 9), )
     ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
     stackplot(list(range(df['Fiscal Year'].min(), df['Fiscal Year'].max() + 1)),
