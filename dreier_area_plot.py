@@ -1,5 +1,5 @@
 """
-Download NASA data from planetary.org
+Download NASA data from planetary.org and build a graph from it
 """
 
 from logging import INFO
@@ -22,6 +22,7 @@ from pandas import read_excel
 def get_mission_year(input_df: DataFrame, name: str) -> int:
     result_df = input_df[['Fiscal Year', name]]
     return result_df[result_df[name] > 0]['Fiscal Year'].min()
+
 
 def read_dataframe_excel(arg_io: str, arg_sheet_name: str) -> DataFrame:
     result_df = read_excel(io=arg_io, sheet_name=arg_sheet_name, engine='openpyxl')
@@ -78,9 +79,8 @@ if __name__ == '__main__':
     columns = columns[1:]
     f, ax = subplots(figsize=(16, 9), )
     ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
-    max_year = df['Fiscal Year'].max() + 1
-    min_year = df['Fiscal Year'].min()
-    stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns, )
+    stackplot(list(range(df['Fiscal Year'].min(), df['Fiscal Year'].max() + 1)),
+              [df[column].values for column in columns], labels=columns, )
     legend(loc='upper left', ncol=2)
     fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
     tight_layout()
