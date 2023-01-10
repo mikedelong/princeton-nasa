@@ -70,22 +70,21 @@ if __name__ == '__main__':
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info('shape: %s', df.shape)
 
-    max_year = df['Fiscal Year'].max() + 1
-    min_year = df['Fiscal Year'].min()
     columns = [item for item in df.columns if item != 'Fiscal Year']
-    # todo plot the columns in chronological order not alphabetical order
     first = [(column, get_mission_year(df, column)) for column in columns]
     first = sorted(first, key=lambda x: x[1], )
-
-    proceed = False
-    if proceed:
-        f, ax = subplots(figsize=(16, 9), )
-        ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
-        stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns, )
-        legend(loc='upper left', ncol=2)
-        fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
-        tight_layout()
-        LOGGER.info('saving %s', fname)
-        savefig(format='png', fname=fname)
+    columns = ['Fiscal Year'] + [item[0] for item in first]
+    df = df[columns]
+    columns = columns[1:]
+    f, ax = subplots(figsize=(16, 9), )
+    ax.set_prop_cycle(color=cm.plasma(linspace(0, 1, len(df.columns))))
+    max_year = df['Fiscal Year'].max() + 1
+    min_year = df['Fiscal Year'].min()
+    stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns, )
+    legend(loc='upper left', ncol=2)
+    fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
+    tight_layout()
+    LOGGER.info('saving %s', fname)
+    savefig(format='png', fname=fname)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
