@@ -72,6 +72,10 @@ if __name__ == '__main__':
     min_year = df['Fiscal Year'].min()
     columns = [item for item in df.columns if item != 'Fiscal Year']
     # todo plot the columns in chronological order not alphabetical order
+    first = dict()
+    for column in columns:
+        mission_df = df[['Fiscal Year', column]]
+        first[column] = mission_df[mission_df[column] > 0]['Fiscal Year'].min()
     stackplot(list(range(min_year, max_year)), [df[column].values for column in columns], labels=columns, )
     legend(loc='upper left', ncol=2)
     fname = OUTPUT_FOLDER + 'dreier_stackplot.png'
