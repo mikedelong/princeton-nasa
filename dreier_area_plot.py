@@ -71,8 +71,8 @@ if __name__ == '__main__':
     df = df[df['Fiscal Year'] != '1976 TQ']
     LOGGER.info('shape: %s', df.shape)
 
-    first = [(column, get_mission_year(df, column)) for column in df.columns if column != 'Fiscal Year']
-    first = sorted(first, key=lambda x: x[1], )
+    first = sorted([(column, get_mission_year(df, column)) for column in df.columns if column != 'Fiscal Year'],
+                   key=lambda x: x[1], )
     df = df[['Fiscal Year'] + [item[0] for item in first]]
     columns = [item[0] for item in first]
     f, ax = subplots(figsize=(16, 9), )
