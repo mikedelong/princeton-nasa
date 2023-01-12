@@ -51,6 +51,14 @@ SHEET_NAMES = ['Introduction', 'Mission Costs', 'Timeline', 'Planetary Science B
                'FY 1967', 'FY 1966', 'FY 1965', 'FY 1964', 'FY 1963', 'FY 1962', 'FY 1961', 'FY 1960', 'FY 1959',
                'NNSI', 'NAICS', 'US Spending & Outlays']
 
+USECOLS = ['Fiscal Year', 'Lunar Ranger', 'Lunar Surveyor', 'Mariner 1 & 2', 'Lunar Orbiter', 'Mariner 3 & 4',
+           'Mariner 5', 'Mariner 6 & 7', 'Mariner 8 & 9', 'Pioneer 10 & 11', 'Viking', 'Mariner 10', 'Voyager',
+           'Pioneer Venus', 'Galileo', 'Magellan', 'Mars Observer', 'Cassini', 'Mars Pathfinder', 'MGS', 'NEAR',
+           'Deep Space 1', 'Lunar Prospector', 'MPL/MCO', 'Stardust', 'Genesis', 'CONTOUR', 'Mars Odyssey*',
+           'Deep Impact', 'MESSENGER', 'MER', 'MRO', 'New Horizons', 'Dawn', 'MSL Curiosity', 'Phoenix', 'Juno',
+           'GRAIL', 'MAVEN', 'LADEE', 'InSight', 'MOMA', 'OSIRIS-REx', 'Mars Perseverance', 'Europa Clipper' 'DART',
+           'Lucy', 'Psyche', 'VIPER']
+
 if __name__ == '__main__':
     TIME_START = now()
     LOGGER = getLogger(__name__, )
@@ -64,7 +72,7 @@ if __name__ == '__main__':
     input_file = INPUT_FOLDER + INPUT_FILE
     sheet_name = 'Mission Costs'
     LOGGER.info('loading sheet %s from %s', sheet_name, input_file)
-    df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name)
+    df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name, )
     df = df.drop(columns=['Unnamed: 0'])
     df = df[~df['Fiscal Year'].isna()].fillna(0)
     # for the moment let's drop our problematic row
