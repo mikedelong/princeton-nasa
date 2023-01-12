@@ -24,8 +24,8 @@ def get_mission_year(input_df: DataFrame, name: str) -> int:
     return result_df[result_df[name] > 0]['Fiscal Year'].min()
 
 
-def read_dataframe_excel(arg_io: str, arg_sheet_name: str) -> DataFrame:
-    result_df = read_excel(io=arg_io, sheet_name=arg_sheet_name, engine='openpyxl')
+def read_dataframe_excel(arg_io: str, arg_sheet_name: str, usecols: list,) -> DataFrame:
+    result_df = read_excel(io=arg_io, sheet_name=arg_sheet_name, engine='openpyxl', usecols=usecols)
     return result_df
 
 
@@ -56,7 +56,7 @@ USECOLS = ['Fiscal Year', 'Lunar Ranger', 'Lunar Surveyor', 'Mariner 1 & 2', 'Lu
            'Pioneer Venus', 'Galileo', 'Magellan', 'Mars Observer', 'Cassini', 'Mars Pathfinder', 'MGS', 'NEAR',
            'Deep Space 1', 'Lunar Prospector', 'MPL/MCO', 'Stardust', 'Genesis', 'CONTOUR', 'Mars Odyssey*',
            'Deep Impact', 'MESSENGER', 'MER', 'MRO', 'New Horizons', 'Dawn', 'MSL Curiosity', 'Phoenix', 'Juno',
-           'GRAIL', 'MAVEN', 'LADEE', 'InSight', 'MOMA', 'OSIRIS-REx', 'Mars Perseverance', 'Europa Clipper' 'DART',
+           'GRAIL', 'MAVEN', 'LADEE', 'InSight', 'MOMA', 'OSIRIS-REx', 'Mars Perseverance', 'Europa Clipper', 'DART',
            'Lucy', 'Psyche', 'VIPER']
 
 if __name__ == '__main__':
@@ -72,8 +72,7 @@ if __name__ == '__main__':
     input_file = INPUT_FOLDER + INPUT_FILE
     sheet_name = 'Mission Costs'
     LOGGER.info('loading sheet %s from %s', sheet_name, input_file)
-    df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name, )
-    df = df.drop(columns=['Unnamed: 0'])
+    df = read_dataframe_excel(arg_io=input_file, arg_sheet_name=sheet_name, usecols=USECOLS)
     df = df[~df['Fiscal Year'].isna()].fillna(0)
     # for the moment let's drop our problematic row
     df = df[df['Fiscal Year'] != '1976 TQ']
