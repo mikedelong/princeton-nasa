@@ -6,6 +6,7 @@ from logging import INFO
 from logging import basicConfig
 from logging import getLogger
 from pathlib import Path
+from typing import Union
 
 from arrow import now
 from matplotlib.pyplot import cm
@@ -24,8 +25,8 @@ def get_mission_year(input_df: DataFrame, name: str) -> int:
     return result_df[result_df[name] > 0]['Fiscal Year'].min()
 
 
-def read_dataframe_excel(arg_io: str, arg_sheet_name: str, usecols: list,) -> DataFrame:
-    result_df = read_excel(io=arg_io, sheet_name=arg_sheet_name, engine='openpyxl', usecols=usecols)
+def read_dataframe_excel(arg_io: str, arg_sheet_name: str, usecols: Union[int, list, None], ) -> DataFrame:
+    result_df = read_excel(engine='openpyxl', io=arg_io, sheet_name=arg_sheet_name, usecols=usecols, )
     return result_df
 
 
@@ -50,7 +51,6 @@ SHEET_NAMES = ['Introduction', 'Mission Costs', 'Timeline', 'Planetary Science B
                'FY 1976 TQ', 'FY 1975', 'FY 1974', 'FY 1973', 'FY 1972', 'FY 1971', 'FY 1970', 'FY 1969', 'FY 1968',
                'FY 1967', 'FY 1966', 'FY 1965', 'FY 1964', 'FY 1963', 'FY 1962', 'FY 1961', 'FY 1960', 'FY 1959',
                'NNSI', 'NAICS', 'US Spending & Outlays']
-
 USECOLS = ['Fiscal Year', 'Lunar Ranger', 'Lunar Surveyor', 'Mariner 1 & 2', 'Lunar Orbiter', 'Mariner 3 & 4',
            'Mariner 5', 'Mariner 6 & 7', 'Mariner 8 & 9', 'Pioneer 10 & 11', 'Viking', 'Mariner 10', 'Voyager',
            'Pioneer Venus', 'Galileo', 'Magellan', 'Mars Observer', 'Cassini', 'Mars Pathfinder', 'MGS', 'NEAR',
