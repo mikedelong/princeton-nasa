@@ -65,7 +65,7 @@ if __name__ == '__main__':
     basicConfig(format='%(asctime)s : %(name)s : %(levelname)s : %(message)s', level=INFO, )
     LOGGER.info('started')
 
-    for folder in [INPUT_FOLDER]:
+    for folder in [INPUT_FOLDER, OUTPUT_FOLDER]:
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
